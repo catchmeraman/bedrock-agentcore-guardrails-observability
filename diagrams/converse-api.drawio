@@ -1,0 +1,116 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Converse API" id="converse-api">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1120" math="0" shadow="0" adaptiveColors="auto">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Amazon Bedrock Converse API — one &quot;single API&quot;, model-agnostic inference" style="text;html=1;align=center;verticalAlign=middle;fontStyle=1;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="120" y="16" width="1460" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="sub" value="Write your code once → swap the underlying model by changing only modelId. No per-provider payload rewrite." style="text;html=1;align=center;verticalAlign=middle;fontSize=12;fontColor=#555555;" vertex="1" parent="1">
+          <mxGeometry x="120" y="46" width="1460" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="app" value="Your Application&#xa;(one code path)" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#232F3E;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.user;" vertex="1" parent="1">
+          <mxGeometry x="70" y="330" width="60" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="reqbox" value="Single unified request shape" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6f2ef;strokeColor=#01A88D;verticalAlign=top;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="200" y="180" width="330" height="360" as="geometry"/>
+        </mxCell>
+        <mxCell id="reqcode" value="client.converse(&#xa;  modelId = &quot;...&quot;,        # swap this only&#xa;  messages = [ {role, content[]} ],  # multi-turn&#xa;  system = [ {text} ],   # system prompt&#xa;  inferenceConfig = { maxTokens, temperature },&#xa;  toolConfig = { tools[] },   # function calling&#xa;  guardrailConfig = { guardrailIdentifier,&#xa;                      trace: &quot;enabled&quot; }&#xa;)" style="text;html=1;align=left;whiteSpace=wrap;fontFamily=monospace;fontSize=11;fillColor=#ffffff;strokeColor=#01A88D;" vertex="1" parent="1">
+          <mxGeometry x="220" y="215" width="290" height="180" as="geometry"/>
+        </mxCell>
+        <mxCell id="respcode" value="Unified response:&#xa;output.message.content[].text&#xa;stopReason, usage{inputTokens,outputTokens}&#xa;trace (guardrail assessments)" style="text;html=1;align=left;whiteSpace=wrap;fontFamily=monospace;fontSize=11;fillColor=#ffffff;strokeColor=#01A88D;" vertex="1" parent="1">
+          <mxGeometry x="220" y="410" width="290" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="fam" value="Converse family (Bedrock Runtime)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6f2ef;strokeColor=#01A88D;verticalAlign=top;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="600" y="200" width="300" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="bricon" value="Bedrock&#xa;Runtime" style="sketch=0;points=[[0,0,0],[0.5,0,0],[1,0,0],[0,1,0],[0.5,1,0],[1,1,0]];outlineConnect=0;fontColor=#232F3E;fillColor=#01A88D;strokeColor=#ffffff;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=9;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.bedrock;" vertex="1" parent="1">
+          <mxGeometry x="820" y="212" width="50" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="conv" value="Converse&#xa;(synchronous request / response)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="625" y="270" width="250" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="convstream" value="ConverseStream&#xa;(token-by-token streaming)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="625" y="335" width="250" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="abstract" value="Abstracts each provider's native payload&#xa;→ you don't hand-format per-model JSON" style="text;html=1;align=center;whiteSpace=wrap;fontSize=10;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="600" y="420" width="300" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="models" value="Same request shape → any supported model (change modelId only)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff7e6;strokeColor=#D9A741;verticalAlign=top;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="980" y="150" width="360" height="470" as="geometry"/>
+        </mxCell>
+        <mxCell id="m_claude" value="Anthropic Claude" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#D9A741;" vertex="1" parent="1">
+          <mxGeometry x="1005" y="195" width="150" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="m_nova" value="Amazon Nova / Titan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#D9A741;" vertex="1" parent="1">
+          <mxGeometry x="1170" y="195" width="150" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="m_llama" value="Meta Llama" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#D9A741;" vertex="1" parent="1">
+          <mxGeometry x="1005" y="250" width="150" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="m_mistral" value="Mistral" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#D9A741;" vertex="1" parent="1">
+          <mxGeometry x="1170" y="250" width="150" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="m_cohere" value="Cohere" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#D9A741;" vertex="1" parent="1">
+          <mxGeometry x="1005" y="305" width="150" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="m_ai21" value="AI21" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#D9A741;" vertex="1" parent="1">
+          <mxGeometry x="1170" y="305" width="150" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="m_more" value="DeepSeek, Writer, and more&#xa;(see API compatibility page)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#D9A741;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="1005" y="360" width="315" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="usecase" value="USE CASES: chatbots &amp; assistants, multi-turn conversations,&#xa;tool use / function calling, RAG answer generation,&#xa;model A/B testing &amp; swapping, streaming UIs, guarded agents." style="text;html=1;align=left;whiteSpace=wrap;fontSize=10;fillColor=#e6f2ef;strokeColor=#01A88D;" vertex="1" parent="1">
+          <mxGeometry x="1005" y="420" width="315" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="swapnote" value="Switch model = change one string.&#xa;Rest of the code is identical." style="text;html=1;align=left;whiteSpace=wrap;fontSize=10;fontColor=#555555;" vertex="1" parent="1">
+          <mxGeometry x="1005" y="515" width="315" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="capbox" value="Built-in capabilities (same across all models)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;verticalAlign=top;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="200" y="620" width="1140" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="c1" value="Multi-turn&#xa;messages[] with roles" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="220" y="660" width="170" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="c2" value="System prompts&#xa;first-class field" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="405" y="660" width="170" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="c3" value="Tool use&#xa;standardized toolConfig" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="590" y="660" width="170" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="c4" value="Streaming&#xa;ConverseStream" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="775" y="660" width="170" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="c5" value="Guardrails&#xa;guardrailConfig + trace" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="960" y="660" width="170" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="c6" value="Images / documents&#xa;multimodal content blocks" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="1145" y="660" width="175" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="cmp" value="When to use which" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;verticalAlign=top;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="200" y="770" width="1140" height="220" as="geometry"/>
+        </mxCell>
+        <mxCell id="convuse" value="Use CONVERSE (default / recommended)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;verticalAlign=top;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="220" y="810" width="540" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="convuselist" value="• Conversational / chat &amp; agent workloads&#xa;• You want to swap or A/B test models freely&#xa;• Need tool use, system prompts, streaming, guardrails&#xa;• Want one consistent code path &amp; response shape&#xa;• Multimodal chat (text + image + document)" style="text;html=1;align=left;whiteSpace=wrap;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="235" y="845" width="510" height="115" as="geometry"/>
+        </mxCell>
+        <mxCell id="invuse" value="Use INVOKEMODEL (per-model, fallback)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fde9d9;strokeColor=#ED7100;verticalAlign=top;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="780" y="810" width="540" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="invuselist" value="• A model or niche parameter Converse doesn't support yet&#xa;• Non-chat modalities (e.g. image generation)&#xa;• You need a provider-specific field Converse doesn't expose&#xa;• Streaming variant: InvokeModelWithResponseStream&#xa;• Trade-off: you hand-format per-provider JSON" style="text;html=1;align=left;whiteSpace=wrap;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="795" y="845" width="510" height="115" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_app_req" value="one call" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="app" target="reqbox"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e_req_fam" value="converse() / converseStream()" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="reqbox" target="fam"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e_fam_models" value="routes to modelId" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="fam" target="models"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e_models_app" value="unified response back" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;strokeColor=#01A88D;" edge="1" parent="1" source="models" target="respcode"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="legend" value="Legend:   teal = unified Converse interface   yellow = model providers   blue = built-in capabilities   pink = guardrails   green/orange = API choice" style="text;html=1;align=left;verticalAlign=middle;fontSize=11;fillColor=#ffffff;strokeColor=#cccccc;" vertex="1" parent="1">
+          <mxGeometry x="200" y="1000" width="1140" height="30" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

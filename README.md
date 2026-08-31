@@ -328,6 +328,50 @@ def record_guardrail_intervention(response, guardrail_id="abc123xyz"):
 
 ---
 
+## Appendix: the Converse API (Bedrock's "single API")
+
+The guardrail examples above attach `guardrailConfig` to a **`Converse`** call. Converse is
+Amazon Bedrock's **single, unified, model-agnostic inference API** — one request/response shape
+that works across providers (Claude, Nova/Titan, Llama, Mistral, Cohere, AI21, and more). You
+write the code once and **switch models by changing only `modelId`**, with no per-provider
+payload rewrite.
+
+![Bedrock Converse API](diagrams/converse-api.png)
+
+Editable source: [`diagrams/converse-api.drawio`](diagrams/converse-api.drawio).
+
+**Converse vs InvokeModel**
+
+| | `Converse` (the "single API") | `InvokeModel` (per-model) |
+|---|---|---|
+| Request/response shape | One consistent schema for all models | Different JSON per provider |
+| Switching models | Change `modelId` only | Rewrite the payload |
+| Multi-turn / system prompt / tool use | First-class fields | Provider-specific |
+| Streaming | `ConverseStream` | `InvokeModelWithResponseStream` |
+| Guardrails | `guardrailConfig` + `trace` | `guardrailIdentifier` params |
+
+Minimal example — the same code targets any model by swapping `modelId`:
+
+```python
+import boto3
+client = boto3.client("bedrock-runtime")
+
+resp = client.converse(
+    modelId="anthropic.claude-3-5-sonnet-20241022-v2:0",   # swap for Nova / Llama / etc.
+    messages=[{"role": "user", "content": [{"text": "Summarize AgentCore in one line."}]}],
+    system=[{"text": "You are concise."}],
+    inferenceConfig={"maxTokens": 200, "temperature": 0.2},
+    guardrailConfig={"guardrailIdentifier": "abc123xyz", "guardrailVersion": "1", "trace": "enabled"},
+)
+print(resp["output"]["message"]["content"][0]["text"])
+```
+
+Use **Converse** by default; fall back to **InvokeModel** only for models/parameters Converse
+doesn't support yet or non-chat modalities (e.g. image generation). Check the AWS
+"API compatibility" page to confirm a specific model supports the Converse family.
+
+---
+
 ## Related writeup
 
 - **AgentCore Memory** (now a separate repo): **https://github.com/catchmeraman/agentcore-memory-explained** — how AgentCore Memory works: parallel sessions, isolation across users, short-term vs long-term, preferences, retention, and the managed-vs-self-managed (DynamoDB single-table) storage model, with an architecture diagram and an end-to-end customer-support code sample.
@@ -341,7 +385,9 @@ def record_guardrail_intervention(response, guardrail_id="abc123xyz"):
 │   ├── architecture-flow.drawio      # AWS-iconified end-to-end flow (editable)
 │   ├── architecture-flow.png         # rendered PNG (embedded above)
 │   ├── sequence-flow.mmd             # Mermaid sequence diagram source
-│   └── sequence-flow.png             # rendered PNG (embedded above)
+│   ├── sequence-flow.png             # rendered PNG (embedded above)
+│   ├── converse-api.drawio           # Converse API explainer (editable)
+│   └── converse-api.png              # rendered PNG (embedded in appendix)
 └── policies/
     └── business-hours.cedar          # sample Cedar authorization policy
 ```
