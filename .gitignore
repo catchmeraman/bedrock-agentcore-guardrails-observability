@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Secrets / credentials (safety net — nothing here should ever be committed)
+*.pem
+*.key
+.env
+*.token
+jwt-token.txt

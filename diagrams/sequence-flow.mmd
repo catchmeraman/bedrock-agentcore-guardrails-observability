@@ -1,0 +1,52 @@
+%% Sequence diagram: request/response timeline through AgentCore
+%% Render at https://mermaid.live or import into draw.io (Arrange > Insert > Advanced > Mermaid)
+sequenceDiagram
+    autonumber
+    actor U as User / Client
+    participant IdP as Cognito / OIDC IdP
+    participant RT as AgentCore Runtime
+    participant GI as Inbound Guardrail
+    participant FM as Foundation Model
+    participant GW as AgentCore Gateway
+    participant PE as Cedar Policy Engine
+    participant T as Backend Tool
+    participant GO as Outbound Guardrail
+    participant CW as CloudWatch
+
+    U->>IdP: Sign in
+    IdP-->>U: JWT (bearer token)
+    U->>RT: Invoke agent (Authorization: Bearer JWT)
+    RT->>RT: Verify JWT (discoveryUrl, allowedClients, allowedAudience)
+    Note over RT: AgentCore Identity establishes Workload Identity for the agent
+    RT->>GI: ApplyGuardrail (source=INPUT)
+    alt input blocked
+        GI-->>RT: GUARDRAIL_INTERVENED (trace)
+        GI->>CW: emit trace
+        RT-->>U: safe refusal message
+    else input passes
+        GI-->>RT: NONE
+        RT->>FM: Converse / InvokeModel (trace enabled)
+        FM-->>RT: model output (may request a tool)
+        RT->>GW: tool call over MCP (agent workload token)
+        GW->>GW: verify workload token (inbound auth)
+        GW->>PE: authorize(principal, action, resource)
+        alt forbid
+            PE-->>GW: DENY
+            PE->>CW: Cedar decision log (deny)
+            GW-->>RT: tool call rejected
+        else permit
+            PE-->>GW: ALLOW
+            PE->>CW: Cedar decision log (allow)
+            GW->>T: invoke tool (outbound auth: IAM / OAuth / API key)
+            T-->>GW: tool result
+            GW-->>RT: tool result
+        end
+        RT->>GO: ApplyGuardrail (source=OUTPUT)
+        GO->>CW: emit trace / metrics
+        alt output blocked or anonymized
+            GO-->>RT: GUARDRAIL_INTERVENED (masked)
+        else output passes
+            GO-->>RT: NONE
+        end
+        RT-->>U: final safe response
+    end
