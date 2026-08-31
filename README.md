@@ -324,14 +324,20 @@ def record_guardrail_intervention(response, guardrail_id="abc123xyz"):
 
 ---
 
+## Related writeup
+
+- **[MEMORY.md](MEMORY.md)** — How AgentCore Memory works: parallel sessions, isolation across users, short-term vs long-term, preferences, retention, and the managed-vs-self-managed (DynamoDB single-table) storage model. Diagram: [`diagrams/memory-architecture.drawio`](diagrams/memory-architecture.drawio).
+
 ## 8. Repo contents
 
 ```
 .
-├── README.md                         # this writeup
+├── README.md                         # this writeup (Guardrails observability + Identity + Cedar)
+├── MEMORY.md                         # AgentCore Memory: sessions, isolation, storage/scale
 ├── diagrams/
 │   ├── architecture-flow.drawio      # AWS-iconified end-to-end flow (open in draw.io)
-│   └── sequence-flow.mmd             # Mermaid sequence diagram source
+│   ├── sequence-flow.mmd             # Mermaid sequence diagram source
+│   └── memory-architecture.drawio    # AgentCore Memory architecture (open in draw.io)
 └── policies/
     └── business-hours.cedar          # sample Cedar authorization policy
 ```
