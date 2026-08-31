@@ -43,11 +43,15 @@ Identity answers *who and which actions*; Guardrails answer *what content*. Ever
 
 ### Architecture flow (with AWS icons)
 
-Open [`diagrams/architecture-flow.drawio`](diagrams/architecture-flow.drawio) in [draw.io](https://app.diagrams.net/). It shows the end-to-end path: user → Identity (inbound auth) → inbound guardrail → model → agent reasoning → Gateway (inbound auth + Cedar) → outbound credentials → backend tools → outbound guardrail → response, with all checkpoints emitting to CloudWatch.
+![Architecture flow](diagrams/architecture-flow.png)
+
+Editable source: [`diagrams/architecture-flow.drawio`](diagrams/architecture-flow.drawio) (open in [draw.io](https://app.diagrams.net/)). It shows the end-to-end path: user → Identity (inbound auth) → inbound guardrail → model → agent reasoning → Gateway (inbound auth + Cedar) → outbound credentials → backend tools → outbound guardrail → response, with all checkpoints emitting to CloudWatch.
 
 ### Sequence diagram (request/response timeline)
 
-Source: [`diagrams/sequence-flow.mmd`](diagrams/sequence-flow.mmd). Rendered version:
+![Sequence flow](diagrams/sequence-flow.png)
+
+Source: [`diagrams/sequence-flow.mmd`](diagrams/sequence-flow.mmd).
 
 ```mermaid
 sequenceDiagram
@@ -326,18 +330,18 @@ def record_guardrail_intervention(response, guardrail_id="abc123xyz"):
 
 ## Related writeup
 
-- **[MEMORY.md](MEMORY.md)** — How AgentCore Memory works: parallel sessions, isolation across users, short-term vs long-term, preferences, retention, and the managed-vs-self-managed (DynamoDB single-table) storage model. Diagram: [`diagrams/memory-architecture.drawio`](diagrams/memory-architecture.drawio).
+- **AgentCore Memory** (now a separate repo): **https://github.com/catchmeraman/agentcore-memory-explained** — how AgentCore Memory works: parallel sessions, isolation across users, short-term vs long-term, preferences, retention, and the managed-vs-self-managed (DynamoDB single-table) storage model, with an architecture diagram and an end-to-end customer-support code sample.
 
 ## 8. Repo contents
 
 ```
 .
 ├── README.md                         # this writeup (Guardrails observability + Identity + Cedar)
-├── MEMORY.md                         # AgentCore Memory: sessions, isolation, storage/scale
 ├── diagrams/
-│   ├── architecture-flow.drawio      # AWS-iconified end-to-end flow (open in draw.io)
+│   ├── architecture-flow.drawio      # AWS-iconified end-to-end flow (editable)
+│   ├── architecture-flow.png         # rendered PNG (embedded above)
 │   ├── sequence-flow.mmd             # Mermaid sequence diagram source
-│   └── memory-architecture.drawio    # AgentCore Memory architecture (open in draw.io)
+│   └── sequence-flow.png             # rendered PNG (embedded above)
 └── policies/
     └── business-hours.cedar          # sample Cedar authorization policy
 ```
